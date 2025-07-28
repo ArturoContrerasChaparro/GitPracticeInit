@@ -1,20 +1,46 @@
 import { Modal, Form, Input, InputNumber, message,  } from "antd"
 import axios from "axios"
+import { useEffect } from "react"
 
-const ProductsCreate = ({ openModalCreate, setOpenModalCreate, setProducts }) => {
+const ProductsCreate = ({ openModalCreate, setOpenModalCreate, setProducts, productToEdit, setProductToEdit }) => {
 
   const [form] = Form.useForm()
+
+  useEffect(() => {
+    if (productToEdit) {
+      form.setFieldsValue(productToEdit)
+    } else {
+      form.resetFields()
+    }
+  },[productToEdit, form])
+
+  console.log(productToEdit);
+  
 
   const createProduct = async () => {
     try {
       const values = await form.validateFields()
+
+      if (productToEdit) {
+        await axios.put(`https://fakestoreapi.com/products/${productToEdit.id}`, values)
+        setProducts((prev) =>
+          Array.isArray(prev)
+            ? prev.map((p) =>
+                p.id === productToEdit.id ? { ...p, ...values } : p
+              )
+            : []
+        )
+        message.success("Producto actualizado")
+      } else {
       const response = await axios.post("https://fakestoreapi.com/products", values)
-      form.resetFields()
-      setOpenModalCreate(false)
       setProducts(prev => [...prev, response.data])
       message.success("Se ha creado el producto")
+      }
+      form.resetFields()
+      setOpenModalCreate(false)
+      setProductToEdit(null)
     } catch (error) {
-      message.error(error.message || "Error al crear el producto" )
+      message.error(error.message || "Error al guardar el producto" )
     }
   }
   
@@ -22,10 +48,10 @@ const ProductsCreate = ({ openModalCreate, setOpenModalCreate, setProducts }) =>
     <div>
       <Modal
         open={openModalCreate}
-        title="Nuevo producto"
+        title={productToEdit ? "Editar Producto" : "Nuevo producto"}
         onCancel={() => {setOpenModalCreate(false)}}
         onOk={createProduct}
-        okText="Crear producto">
+        okText= {productToEdit ? "Actualizar" : "Crear producto"}>
           <Form 
             form={form}
             layout="vertical"

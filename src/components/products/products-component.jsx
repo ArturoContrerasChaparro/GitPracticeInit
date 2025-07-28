@@ -10,6 +10,7 @@ const ProductsComponent = () => {
 
   const [products, setProducts] = useState([])
   const [openModalCreate, setOpenModalCreate] = useState(false)
+  const [productToEdit, setProductToEdit] = useState(null)
 
   useEffect(() => {
     const getProducts = async () => {
@@ -38,6 +39,12 @@ const ProductsComponent = () => {
     setOpenModalCreate(true)
   }
 
+  const handleEditProduct = (product) => {
+    setProductToEdit(product)
+    setOpenModalCreate(true)
+  }
+
+
   return (
     <>
       <Row gutter={[16,16]}>
@@ -55,7 +62,8 @@ const ProductsComponent = () => {
             <Col key={product.id} xs={24} md={8} lg={6} xl={6} xxl={4}>
               <ProductCard
                 product={product}
-                deleteProduct={deleteProduct} />
+                deleteProduct={deleteProduct}
+                onEdit={() => handleEditProduct(product)} />
             </Col>
           ))}
         </Row>
@@ -64,7 +72,9 @@ const ProductsComponent = () => {
       <ProductsCreate
         openModalCreate={openModalCreate}
         setOpenModalCreate={setOpenModalCreate} 
-        setProducts={setProducts}/>
+        setProducts={setProducts}
+        productToEdit={productToEdit}
+        setProductToEdit={setProductToEdit}/>
     </>
   )
 }
