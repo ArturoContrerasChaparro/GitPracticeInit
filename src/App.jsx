@@ -2,6 +2,7 @@ import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import Home from './pages/Home';
 import About from './pages/About';
+import Products from './pages/Products';
 
 const { Header, Content } = Layout;
 
@@ -17,6 +18,10 @@ function App() {
       key: '/about',
       label: <Link to="/about">Acerca de</Link>,
     },
+    {
+      key: '/products',
+      label: <Link to="/products">Productos</Link>
+    }
   ];
 
   return (
@@ -33,6 +38,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+          <Route path="/products" element={<Products />}/>
         </Routes>
       </Content>
     </Layout>
