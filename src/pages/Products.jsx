@@ -1,8 +1,9 @@
-import { Row, Col, Typography, message, Card, Image } from "antd"
+import { Row, Col, Typography, message } from "antd"
 import { useEffect, useState } from "react"
 import axios from "axios"
+import ProductCard from "../components/products/product-card"
 
-const { Title, Text } = Typography
+const { Title } = Typography
 
 const Products = () => {
 
@@ -28,36 +29,18 @@ const Products = () => {
           <Title>Productos</Title>
         </Col>
       </Row>
-      
+
       {products.length > 0 && (
         <Row>
           {products.map((product) => (
-            <Col xs={24} md={8} lg={6} xl={4} xxl={3} style={{ textAlign: "center" }}>
-              <Card 
-                key={product.id}
-                title={product.title}
-                cover={
-                  <Image
-                    alt={product.title}
-                    src={product.image}
-                    style={{ width: "100%", maxHeight: 300, objectFit: "contain" }}/>
-                }
-                hoverable>
-                  <div> 
-                    <Text ellipsis={{ tooltip: product.description }}>{product.description}</Text>
-                  </div>
-                  <div>
-                    <Title level={3}>{product.price} $</Title>
-                  </div>
-                  <div>
-                    <Title level={5}>{product.category}</Title>
-                  </div>
-                
-              </Card>
+            <Col key={product.id} xs={24} md={8} lg={6} xl={4} xxl={3}>
+              <ProductCard
+                product={product} />
             </Col>
           ))}
         </Row>
       )}
+      
     </>
   )
 }
