@@ -22,6 +22,16 @@ const Products = () => {
     getProducts()
   },[])
 
+  const deleteProduct = async (id) => {
+    try {
+      await axios.delete(`https://fakestoreapi.com/products/${id}`)
+      message.success("Se borro el producto")
+      setProducts(prev => prev.filter( p => p.id !== id))
+    } catch (error) {
+      message.error(error.message || "Error al borrar el producto")
+    }
+  }
+
   return (
     <>
       <Row gutter={[16,16]}>
@@ -31,11 +41,12 @@ const Products = () => {
       </Row>
 
       {products.length > 0 && (
-        <Row>
+        <Row gutter={[12,12]}>
           {products.map((product) => (
-            <Col key={product.id} xs={24} md={8} lg={6} xl={4} xxl={3}>
+            <Col key={product.id} xs={24} md={8} lg={6} xl={6} xxl={4}>
               <ProductCard
-                product={product} />
+                product={product}
+                deleteProduct={deleteProduct} />
             </Col>
           ))}
         </Row>
