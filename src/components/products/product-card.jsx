@@ -2,7 +2,7 @@ import { Button, Card, Image, Typography } from "antd"
 
 const { Title, Text, Paragraph } = Typography
 
-const ProductCard = ({ product, deleteProduct }) => {
+const ProductCard = ({ product, deleteProduct, onEdit }) => {
 
   return (
     <>
@@ -22,7 +22,7 @@ const ProductCard = ({ product, deleteProduct }) => {
         <Title level={3}>{product.price} $</Title>
         <Text type="secondary">{product.category}</Text>
         <div>
-          <Button>Editar</Button>
+          <Button onClick={onEdit}>Editar</Button>
           <Button type="primary" danger onClick={() => {deleteProduct(product.id)}}>Borrar</Button>
         </div>
       </Card>
